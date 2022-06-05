@@ -170,9 +170,9 @@ def pivotAbout(tableau, pivot):
    print("Pivot row:", i+1)
    print("Pivot col:", j+1)
    show=np.zeros((len(tableau),len(tableau[i]), 2))
-   print(f"Show Xi={i+1}:")
+   print(f"Show row={i+1}:")
    show[i] = [(x, pivotDenom) for x in tableau[i]]
-   printRow(show[i], label=True)
+   printRow(show[i])
    tableau[i] = [x / pivotDenom for x in tableau[i]]
    print(tableau[i])
 
@@ -190,8 +190,9 @@ def pivotAbout(tableau, pivot):
             show[k][iterX]=([x*pivotRowMultipleShow[iterX][1]-pivotRowMultipleShow[iterX][0], pivotRowMultipleShow[iterX][1]])
          tableau[k] = [x - y for x,y in zip(tableau[k], pivotRowMultiple)]
          
-         print(f'Show Xi={k+1}:')
+         print(f'Show row={k+1}:')
          printExtRow(extRow)
+         printRow(show[k])
          print(tableau[k])
    printIter(show)
    # print(show)
