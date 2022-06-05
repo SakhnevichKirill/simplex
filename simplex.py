@@ -170,7 +170,7 @@ def pivotAbout(tableau, pivot):
    print("Pivot row:", i+1)
    print("Pivot col:", j+1)
    show=np.zeros((len(tableau),len(tableau[i]), 2))
-   print(f"Show row={i+1}:")
+   print(f"\nRow={i+1}:")
    show[i] = [(x, pivotDenom) for x in tableau[i]]
    printRow(show[i])
    tableau[i] = [x / pivotDenom for x in tableau[i]]
@@ -181,21 +181,19 @@ def pivotAbout(tableau, pivot):
          pivotRowMultipleShow = [[y[0]*tableau[k][j], y[1]] for y in show[i]]
          pivotRowMultiple = [y * tableau[k][j] for y in tableau[i]]
 
-         print("\nOperation:")
-         print(['%.3f * %.3f / %.3f' % (y[0], tableau[k][j], y[1]) for y in show[i]])
-         print(pivotRowMultiple)
          extRow = []
          for iterX, x in enumerate(tableau[k]):
             extRow.append([[x*pivotRowMultipleShow[iterX][1], pivotRowMultipleShow[iterX][0]], pivotRowMultipleShow[iterX][1]])
             show[k][iterX]=([x*pivotRowMultipleShow[iterX][1]-pivotRowMultipleShow[iterX][0], pivotRowMultipleShow[iterX][1]])
          tableau[k] = [x - y for x,y in zip(tableau[k], pivotRowMultiple)]
-         
-         print(f'Show row={k+1}:')
+         if k == len(tableau)-1:
+            print(f'\nZ:')
+         else:
+            print(f'\nRow{k+1}:')
          printExtRow(extRow)
          printRow(show[k])
          print(tableau[k])
    printIter(show)
-   # print(show)
 
 
 
@@ -215,8 +213,9 @@ def simplex(c, A, b):
    for row in tableau:
       print(row)
    print()
-
+   i = 1
    while canImprove(tableau):
+      print(f'-----------------------------------------Step{i}---------------------------------------------')
       pivot = findPivotIndex(tableau)
       print("Next pivot index is=%d,%d \n" % pivot)
       pivotAbout(tableau, pivot)
@@ -224,12 +223,14 @@ def simplex(c, A, b):
       for row in tableau:
          print(row)
       print()
+      i+=1
 
    return tableau, primalSolution(tableau), objectiveValue(tableau)
 
 
 if __name__ == "__main__":
-   c = [6, 13]
+   # c = [-6, -13] # min
+   c = [6, 13] # max
    A = [[9, 11], [5, -1], [-1, 13]]
    b = [48, 44, 6]
 
@@ -240,5 +241,8 @@ if __name__ == "__main__":
    c += [0,0,0]
 
    t, s, v = simplex(c, A, b)
-   print(s)
-   print(v)
+   temp = "Константы основных переменных: "
+   for i in range(len(s)):
+      temp+=f'x{s[i][0]}={s[i][1]}, '
+   print(temp)
+   print(f'Z(x)={v}')
